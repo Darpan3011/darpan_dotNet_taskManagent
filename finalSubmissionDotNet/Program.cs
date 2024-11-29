@@ -1,5 +1,6 @@
 using Serilog;
 using finalSubmissionDotNet.BuilderExtensions;
+using finalSubmission.Infrastructure.Seeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,12 @@ builder.Services.AddServiceCollection(builder.Configuration);
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<RoleSeeder>();
+    await seeder.SeedRolesAsync();
+}
+
 app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
@@ -24,8 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

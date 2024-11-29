@@ -1,86 +1,79 @@
 ﻿using finalSubmission.Core.Domain.Entities;
-using finalSubmission.Core.ServiceContracts.IUserService;
-using finalSubmissionDotNet.Filters;
-using Microsoft.AspNetCore.Http;
+using finalSubmission.Core.Domain.RepositoryContracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace finalSubmissionDotNet.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "User")]  // Ensure the user has the "User" role
     public class UserController : ControllerBase
     {
-        private readonly ICreateUser _createUser;
-        private readonly IDeleteUser _deleteUser;
+        private readonly ITaskRepository _taskRepository;
 
-        public UserController(ICreateUser createUser, IDeleteUser deleteUser)
+        public UserController(ITaskRepository taskRepository)
         {
-            _createUser = createUser;
-            _deleteUser = deleteUser;
+            _taskRepository = taskRepository;
         }
 
-        [HttpPost("[action]")]
-        [TypeFilter(typeof(ModelValidationActionFilter))]
-        public async Task<IActionResult> CreateUser(string UserName)
+        // Get tasks assigned to the logged-in user
+        [HttpGet("tasks")]
+        public async Task<IActionResult> GetTasksAssignedToUser()
         {
-            if (string.IsNullOrWhiteSpace(UserName))
+            var userId = GetUserIdFromToken();
+
+            if (userId == Guid.Empty)
             {
-                return BadRequest(new { message = "Username cannot be null or empty." });
+                return Unauthorized(new { message = "User ID not found in token" });
             }
 
-            // Initialize a new user with a unique ID
-            User user = new User() { UserName = UserName, UserId = Guid.NewGuid() };
+            var tasks = await _taskRepository.GetAllTasksByUserID(userId);
 
-            try
+            if (tasks == null || tasks.Count == 0)
             {
-                // Attempt to create the user
-                var createdUser = await _createUser.CreateAnUser(user);
-
-                if (createdUser == null)
-                {
-                    return Conflict(new { message = $"User with username '{UserName}' already exists." });
-                }
-
-                return Ok(createdUser);
+                return NotFound(new { message = "No tasks found for the user." });
             }
-            catch (Exception ex)
-            {
-                // Log the exception (pseudo-code for logging is provided)
-                // Log.Error(ex, "Error occurred while creating a user");
-                return StatusCode(500, new { message = "An error occurred while processing your request." });
-            }
+
+            return Ok(tasks);
         }
 
-
-
-        [HttpDelete("[action]/{UserName}")]
-        public async Task<IActionResult> DeleteUser(string UserName)
+        // Update status of a task assigned to the logged-in user
+        [HttpPut("tasks/{taskTitle}/status")]
+        public async Task<IActionResult> UpdateTaskStatus(string taskTitle, [FromBody] string newStatus)
         {
-            try
+            var userId = GetUserIdFromToken();
+
+            if (userId == Guid.Empty)
             {
-                if (string.IsNullOrEmpty(UserName))
-                {
-                    return BadRequest("Username cannot be null or empty.");
-                }
-
-                // Attempt to delete the user
-                User? user = await _deleteUser.DeleteAnUser(UserName);
-
-                if (user is not null)
-                {
-                    return Ok($"User '{UserName}' deleted successfully.");
-                }
-
-                return NotFound($"User with username '{UserName}' does not exist.");
+                return Unauthorized(new { message = "User ID not found in token" });
             }
-            catch (Exception ex)
+
+            var task = await _taskRepository.GetTaskByTitle(taskTitle);
+            if (task == null)
             {
-                // Log exception and return a generic error message
-                // Log.Error(ex, "Error occurred while deleting user."); // Example logging statement
-                return StatusCode(500, "An error occurred while processing your request.");
+                return NotFound(new { message = "Task not found." });
             }
+
+            // Ensure the task is assigned to the logged-in user
+            if (task.UserId != userId)
+            {
+                return Unauthorized(new { message = "You are not authorized to update this task." });
+            }
+
+            // Update the task status
+            task.Status = newStatus;
+            var updatedTask = await _taskRepository.EditATask(task);
+
+            return Ok(updatedTask);
         }
 
-
+        // Helper method to get the UserId from JWT token
+        private Guid GetUserIdFromToken()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            return userIdClaim != null ? Guid.Parse(userIdClaim.Value) : Guid.Empty;
+        }
     }
 }

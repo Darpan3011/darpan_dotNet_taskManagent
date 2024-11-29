@@ -7,7 +7,6 @@ namespace finalSubmission.Core.Domain.RepositoryContracts
         Task<User> CreateUser(User user);
         Task<User?> DeleteUser(string UserName);
         Task<bool> UserExists(string UserName);
-
         Task<List<User>> GetAllAnUsers();
     }
 }

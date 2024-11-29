@@ -1,14 +1,15 @@
 ﻿using finalSubmission.Core.Domain.Entities;
-using finalSubmission.Core.Enums;
 using finalSubmission.Core.ServiceContracts;
 using finalSubmission.Core.ServiceContracts.IUserService;
 using finalSubmissionDotNet.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace finalSubmissionDotNet.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IGetAllTasks _getAllTasks;
@@ -106,7 +107,6 @@ namespace finalSubmissionDotNet.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             return Ok(await _getAllUsers.GetAllAUsers());
-
         }
 
         [HttpGet("[action]")]
@@ -114,8 +114,7 @@ namespace finalSubmissionDotNet.Controllers
         {
 
             List<MyTask> myTasks = await _getByUserID.GetTaskByUserID(userID);
-
-            return myTasks;
+            return myTasks; 
 
         }
     }
