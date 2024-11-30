@@ -9,11 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finalSubmission.Infrastruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finalSubmission.Core", "finalSubmission.Core\finalSubmission.Core.csproj", "{314B54E5-0549-4221-B4D6-47734D939A66}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B20C53A4-723C-49F4-A8BE-ED6DC029BB2D}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\Downloads\README.md = ..\..\..\Downloads\README.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

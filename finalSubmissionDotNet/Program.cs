@@ -1,6 +1,5 @@
 using Serilog;
 using finalSubmissionDotNet.BuilderExtensions;
-using finalSubmission.Infrastructure.Seeder;
 using finalSubmissionDotNet.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +25,6 @@ app.UseExceptionMiddleware();
 
 app.UseSerilogRequestLogging();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
