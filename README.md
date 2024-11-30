@@ -1,27 +1,77 @@
-# Project Overview
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Project Structure](#project-structure)
+- [Role Management Registration](#role-management-registration)
+- [API Usage](#api-usage)
+- [Testing Process](#testing-process)
 
-This solution contains three distinct projects, each with specific responsibilities:
+## Project Overview
 
-## 1. **finalSubmissionDotNet**  
-   This project contains the following:
-   - **Controllers**: Responsible for handling requests from both admins and users.
-   - **Filters**: Custom filters for request processing.
-   - **Log Folder**: Used for logging purposes to track the application events and errors.
-
-## 2. **finalSubmission.Infrastructure**  
-   This project handles the interaction with the database. It includes:
-   - **DbContexts**: Contains the database context used for interacting with the database.
-   - **Migrations**: Manages database schema changes over time.
-   - **Repositories**: Handles CRUD operations for all database tables, ensuring data persistence and retrieval.
-
-## 3. **finalSubmission.Core**  
-   This project defines the core application logic. It includes:
-   - **Models**: Contains the domain models that represent the data structures in the application.
-   - **IdentityModels**: Defines the models related to user authentication and authorization.
-   - **RepositoryContracts**: Specifies the interfaces for repository operations, ensuring decoupling between layers.
-   - **ServiceContracts**: Defines the interfaces for services that provide business logic.
-   - **Services**: Implements the service layer, containing business logic and interacting with repositories.
-
----
+This solution consists of three projects, each designed with specific responsibilities to ensure a clean architecture.
 
 ## Project Structure
+
+### 1. `finalSubmissionDotNet`
+Handles incoming HTTP requests and includes:
+- **Controllers**: Process requests for both Admin and User roles.
+- **Filters**: Custom filters for consistent request preprocessing and postprocessing.
+- **Log Folder**: Stores application logs for debugging and monitoring.
+- **Exception Middleware**: Global Middleware for all requests made.
+
+### 2. `finalSubmission.Infrastructure`
+Manages database interactions and includes:
+- **DbContexts**: Contains the database context for Entity Framework.
+- **Migrations**: Handles schema changes over time.
+- **Repositories**: Implements CRUD operations for database entities.
+
+### 3. `finalSubmission.Core`
+Contains core application logic and includes:
+- **Models**: Domain models representing application data structures.
+- **IdentityModels**: Authentication and authorization models.
+- **RepositoryContracts**: Interfaces for repository operations.
+- **ServiceContracts**: Interfaces for business logic services.
+- **Services**: Implements business logic and orchestrates data access.
+
+## Role Management Registration
+
+### Administrator Role
+To register as an administrator:
+
+POST api/Authentication/Register/0
+- { "username": "admin_username", "password": "YourStrongPassword1!" }
+
+
+Can access APIs in AdminController and AuthenticationController.
+
+### User Role
+To register as a User:
+
+POST api/Authentication/Register/1
+- { "username": "user_username", "password": "YourStrongPassword1!" }
+
+
+Can access APIs in UserController and AuthenticationController.
+
+## API Usage
+
+### Login
+To login for Admin or User role:
+
+POST api/Authentication/Login/
+- { "username": "admin_username", "password": "YourStrongPassword1!" }
+
+
+### Task Management
+To add a task:
+- { "title": "string", "description": "string", "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6", "dueDate": "2024-11-30T11:53:26.525Z", "status": 0 }
+
+
+## Testing Process
+
+### Steps to Test APIs:
+1. Create a user
+2. Create an admin user  
+3. List all available users (Copy any one UserId)
+4. To Add new task:
+   - Paste the copied UserId
+   - Status is optional (default is Pending)
