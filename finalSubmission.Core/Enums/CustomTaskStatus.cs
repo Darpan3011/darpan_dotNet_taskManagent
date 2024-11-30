@@ -2,6 +2,9 @@
 {
     public enum CustomTaskStatus
     {
-        Completed, Pending, InProgress
+        Pending,
+        InProgress,
+        Completed
     }
+
 }

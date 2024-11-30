@@ -1,9 +1,10 @@
 ﻿using ContactsManager.Core.Domain.IdentityEntities;
+using finalSubmission.Infrastructure.ISeeder;
 using Microsoft.AspNetCore.Identity;
 
 namespace finalSubmission.Infrastructure.Seeder
 {
-    public class RoleSeeder
+    public class RoleSeeder : IRoleSeeder
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
 
@@ -14,7 +15,7 @@ namespace finalSubmission.Infrastructure.Seeder
 
         public async Task SeedRolesAsync()
         {
-            // Check if roles exist, if not, create them
+            // add role if not present
             if (!await _roleManager.RoleExistsAsync("Admin"))
             {
                 await _roleManager.CreateAsync(new ApplicationRole { Name = "Admin" });

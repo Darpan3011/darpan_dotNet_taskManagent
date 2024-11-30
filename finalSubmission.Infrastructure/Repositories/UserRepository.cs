@@ -21,24 +21,19 @@ namespace finalSubmission.Infrastructure.Repositories
         /// <returns>The created user entity, or null if the username already exists.</returns>
         public async Task<User?> CreateUser(User user)
         {
-
-            // Check if the user already exists in the database
-            var existingUser = await _dbContext.AllUsersTable
-                .FirstOrDefaultAsync(u => u.UserName == user.UserName);
+            User? existingUser = await _dbContext.AllUsersTable.FirstOrDefaultAsync(u => u.UserName == user.UserName);
 
             if (existingUser != null)
             {
-                return null; // User already exists
+                return null;
             }
 
-            // Add and save the new user
             await _dbContext.AllUsersTable.AddAsync(user);
             await _dbContext.SaveChangesAsync();
 
-            return user; // Return the successfully created user
+            return user;
 
         }
-
 
         /// <summary>
         /// Deletes a user from the database by username if the user exists.
@@ -47,20 +42,16 @@ namespace finalSubmission.Infrastructure.Repositories
         /// <returns>The deleted user entity if successful; null if the user does not exist.</returns>
         public async Task<User?> DeleteUser(string UserName)
         {
-            var user = await _dbContext.AllUsersTable.FirstOrDefaultAsync(u => u.UserName == UserName);
+            User? user = await _dbContext.AllUsersTable.FirstOrDefaultAsync(u => u.UserName == UserName);
 
             if (user is not null)
             {
-                // Remove the user if found
                 _dbContext.AllUsersTable.Remove(user);
-
-                // Save changes to the database
                 await _dbContext.SaveChangesAsync();
-
-                return user; // Return the deleted user entity
+                return user;
             }
 
-            return null; // Return null if the user does not exist
+            return null;
         }
 
         public async Task<List<User>> GetAllAnUsers()

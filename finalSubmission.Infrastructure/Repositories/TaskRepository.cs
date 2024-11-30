@@ -1,5 +1,6 @@
 ﻿using finalSubmission.Core.Domain.Entities;
 using finalSubmission.Core.Domain.RepositoryContracts;
+using finalSubmission.Core.Enums;
 using finalSubmission.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,10 @@ namespace finalSubmission.Infrastructure.Repositories
         /// <returns>Returns a list of all tasks.</returns>
         public async Task<List<MyTask>> GetAllTasks()
         {
-            return await _context.AllTasksTable.ToListAsync();
+            return await _context.AllTasksTable
+                         .FromSqlRaw("EXEC GetAllTasksProcedure")
+                         .ToListAsync();
+
         }
 
         /// <summary>
@@ -41,19 +45,16 @@ namespace finalSubmission.Infrastructure.Repositories
         /// <param name="title">The title of the task to be updated.</param>
         /// <param name="newStatus">The new status to set for the task.</param>
         /// <returns>Returns the updated task if successful, or null if the task was not found.</returns>
-        public async Task<MyTask> UpdateTaskStatus(string title, string newStatus)
+        public async Task<MyTask?> UpdateTaskStatus(string title, CustomTaskStatus newStatus)
         {
             // Fetch the task using the title
-            var myTask = await _context.AllTasksTable.FirstOrDefaultAsync(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+            MyTask? myTask = await _context.AllTasksTable.FirstOrDefaultAsync(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
 
             if (myTask != null)
             {
                 myTask.Status = newStatus;
-
                 _context.AllTasksTable.Update(myTask);
-
                 await _context.SaveChangesAsync();
-
                 return myTask;
             }
 
@@ -67,7 +68,7 @@ namespace finalSubmission.Infrastructure.Repositories
         /// <returns>Returns true if the task was deleted successfully, otherwise false.</returns>
         public async Task<bool> DeleteExistingTask(string title)
         {
-            var task = await GetTaskByTitle(title);
+            MyTask? task = await GetTaskByTitle(title);
 
             if (task != null)
             {
@@ -83,11 +84,9 @@ namespace finalSubmission.Infrastructure.Repositories
         /// </summary>
         /// <param name="status">The status of tasks to retrieve.</param>
         /// <returns>Returns a list of tasks that match the given status.</returns>
-        public async Task<List<MyTask>> GetAllTasksByStatus(string status)
+        public async Task<List<MyTask>?> GetAllTasksByStatus(CustomTaskStatus status)
         {
-            return await _context.AllTasksTable
-                .Where(t => t.Status == status)
-                .ToListAsync();
+            return await _context.AllTasksTable.Where(t => t.Status == status).ToListAsync();
         }
 
         /// <summary>
@@ -95,11 +94,9 @@ namespace finalSubmission.Infrastructure.Repositories
         /// </summary>
         /// <param name="dueDate">The due date to filter tasks by.</param>
         /// <returns>Returns a list of tasks that are due before or on the specified date.</returns>
-        public async Task<List<MyTask>> GetAllTasksByDueDate(DateTime dueDate)
+        public async Task<List<MyTask>?> GetAllTasksByDueDate(DateTime dueDate)
         {
-            return await _context.AllTasksTable
-                .Where(t => t.DueDate.Date <= dueDate.Date)
-                .ToListAsync();
+            return await _context.AllTasksTable.Where(t => t.DueDate.Date <= dueDate.Date).ToListAsync();
         }
 
         /// <summary>
@@ -111,7 +108,7 @@ namespace finalSubmission.Infrastructure.Repositories
         {
             if (string.IsNullOrWhiteSpace(Title)) return null;
 
-            var myTask = await _context.AllTasksTable.FirstOrDefaultAsync(t => t.Title == Title);
+            MyTask? myTask = await _context.AllTasksTable.FirstOrDefaultAsync(t => t.Title == Title);
 
             return myTask;
         }

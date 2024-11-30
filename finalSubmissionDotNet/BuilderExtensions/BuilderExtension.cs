@@ -1,8 +1,6 @@
 ﻿using finalSubmission.Core.Domain.RepositoryContracts;
 using finalSubmission.Core.ServiceContracts.IUserService;
-using finalSubmission.Core.ServiceContracts;
 using finalSubmission.Core.Services.UsersService;
-using finalSubmission.Core.Services;
 using finalSubmission.Infrastructure.DbContexts;
 using finalSubmission.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +10,10 @@ using Microsoft.AspNetCore.Identity;
 using finalSubmission.Infrastructure.Seeder;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using finalSubmission.Core.ServiceContracts.ITaskService;
+using finalSubmission.Core.Services.TaskService;
+using System.Reflection;
+using finalSubmission.Infrastructure.ISeeder;
 
 namespace finalSubmissionDotNet.BuilderExtensions
 {
@@ -20,34 +22,37 @@ namespace finalSubmissionDotNet.BuilderExtensions
         public static IServiceCollection AddServiceCollection(this IServiceCollection services, IConfiguration configuration)
         {
 
-
             services.AddControllers();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
             {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Enter 'Bearer JWT_token' ",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
+                    {
+                        In = ParameterLocation.Header,
+                        Description = "Enter 'Bearer JWT_token' ",
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.ApiKey
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] { }
-        }
-    });
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
             });
 
 
@@ -56,10 +61,8 @@ namespace finalSubmissionDotNet.BuilderExtensions
                 options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]!);
             });
 
-            // Add Identity
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<TaskOrderDbContext>()
-                .AddDefaultTokenProviders();
+            // Adding Identity
+            services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<TaskOrderDbContext>().AddDefaultTokenProviders();
 
             // Configure JWT Authentication
             var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!);
@@ -82,10 +85,9 @@ namespace finalSubmissionDotNet.BuilderExtensions
                 };
             });
 
-            // Add role seeding
-            services.AddScoped<RoleSeeder>();
 
-
+            // DI
+            services.AddScoped<IRoleSeeder, RoleSeeder>();
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGetAllTasks, GetAllTasks>();
@@ -100,6 +102,7 @@ namespace finalSubmissionDotNet.BuilderExtensions
             services.AddScoped<ICreateUser, CreateUser>();
             services.AddScoped<IGetAllUsers, GetAllUsers>();
             services.AddScoped<IGetByUserID, GetByUserID>();
+            services.AddScoped<IGetFilteredTasksByUser,  GetFilteredTasksByUser>();
 
             // for app.UseHttpLogging();
             services.AddHttpLogging(options =>
