@@ -1,7 +1,3 @@
-# Project Title
-
-A high-level description of what the project does, its main features, and purpose.
-
 ## Table of Contents
 - [Project Overview](#project-overview)
 - [Project Structure](#project-structure)
