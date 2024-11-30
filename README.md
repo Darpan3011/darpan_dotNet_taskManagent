@@ -69,9 +69,14 @@ To add a task:
 ## Testing Process
 
 ### Steps to Test APIs:
-1. Create a user
-2. Create an admin user  
-3. List all available users (Copy any one UserId)
-4. To Add new task:
+1. Download the project and extract it.
+2. Go to Package Manager Console.
+3. Write command "Add-Migration Initial".
+4. Write command "Update-Database"
+5. After successful message follow below steps.
+6. Create a user
+7. Create an admin user  
+8. List all available users (Copy any one UserId)
+9. To Add new task:
    - Paste the copied UserId
    - Status is optional (default is Pending)
