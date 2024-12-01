@@ -9,6 +9,20 @@
 
 This solution consists of three projects, each designed with specific responsibilities to ensure a clean architecture.
 
+## Concepts Used
+1. Clean Architecture
+2. SOLID Principles
+3. Dependency Injection
+4. Entity Framework
+5. Model Validation
+6. Authentication using JWT
+7. Role-Based Authorization using JWT
+8. Filters
+9. Global Exception Middleware
+10. Logging using Serilog
+11. LINQ
+12. Swagger UI for both Development and Production (as it is a web API project)
+
 ## Project Structure
 
 ### 1. `finalSubmissionDotNet`
