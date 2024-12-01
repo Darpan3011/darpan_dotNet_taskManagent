@@ -52,7 +52,12 @@ Contains core application logic and includes:
 To register as an administrator:
 
 POST api/Authentication/Register/0
-- { "username": "admin_username", "password": "YourStrongPassword1!" }
+```json 
+{
+   "username": "admin_username",
+   "password": "YourStrongPassword1!"
+}
+```
 
 
 Can access APIs in AdminController and AuthenticationController.
