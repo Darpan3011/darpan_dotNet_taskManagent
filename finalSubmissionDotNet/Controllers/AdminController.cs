@@ -23,8 +23,9 @@ namespace finalSubmissionDotNet.Controllers
         private readonly IGetTaskByStatus _getTaskByStatus;
         private readonly IGetAllUsers _getAllUsers;
         private readonly IGetByUserID _getByUserID;
+        private readonly IUserExistsOrNot _userExistsOrNot;
 
-        public AdminController(IGetAllTasks getAllTasks, ICreateTask createTask, IGetTaskByTitle getTaskByTitle, IDeleteTask deleteTask, IEditTask editTask, IGetTaskByDueDate getTaskByDueDate, IGetTaskByStatus getTaskByStatus, IGetAllUsers getAllUsers, IGetByUserID getByUserID)
+        public AdminController(IGetAllTasks getAllTasks, ICreateTask createTask, IGetTaskByTitle getTaskByTitle, IDeleteTask deleteTask, IEditTask editTask, IGetTaskByDueDate getTaskByDueDate, IGetTaskByStatus getTaskByStatus, IGetAllUsers getAllUsers, IGetByUserID getByUserID, IUserExistsOrNot userExistsOrNot)
         {
             _getAllTasks = getAllTasks;
             _createTask = createTask;
@@ -35,6 +36,7 @@ namespace finalSubmissionDotNet.Controllers
             _getTaskByDueDate = getTaskByDueDate;
             _getAllUsers = getAllUsers;
             _getByUserID = getByUserID;
+            _userExistsOrNot = userExistsOrNot;
         }
 
         /// <summary>
@@ -79,10 +81,16 @@ namespace finalSubmissionDotNet.Controllers
                     task.Status = CustomTaskStatus.Pending;
                 }
 
-                MyTask? createdTask = await _createTask.CreateNewTask(task);
-
-
-                return Ok(createdTask);
+                bool isUserExists = await _userExistsOrNot.IsUserExistsOrNotExists("", task.UserId);
+                if (isUserExists)
+                {
+                    MyTask? createdTask = await _createTask.CreateNewTask(task);
+                    return Ok(createdTask);
+                }
+                else
+                {
+                    return BadRequest(new { message = "User not found" });
+                }
 
             }
             catch (DbUpdateException dbEx) when (dbEx.InnerException?.Message.Contains("Violation of PRIMARY KEY") == true)

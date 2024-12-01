@@ -64,9 +64,9 @@ namespace finalSubmission.Infrastructure.Repositories
         /// </summary>
         /// <param name="UserName">The username to check for existence.</param>
         /// <returns>True if the user exists; otherwise, false.</returns>
-        public async Task<bool> UserExists(string UserName)
+        public async Task<bool> UserExists(string? UserName, Guid? guid)
         {
-            return await _dbContext.AllUsersTable.AnyAsync(u => u.UserName == UserName);
+            return await _dbContext.AllUsersTable.AnyAsync(u => (UserName != null && u.UserName == UserName) || (guid != null && u.UserId == guid));
         }
     }
 }

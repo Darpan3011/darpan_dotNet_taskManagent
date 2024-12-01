@@ -103,6 +103,7 @@ namespace finalSubmissionDotNet.BuilderExtensions
             services.AddScoped<IGetAllUsers, GetAllUsers>();
             services.AddScoped<IGetByUserID, GetByUserID>();
             services.AddScoped<IGetFilteredTasksByUser,  GetFilteredTasksByUser>();
+            services.AddScoped<IUserExistsOrNot, UserExistsOrNot>();
 
             // for app.UseHttpLogging();
             services.AddHttpLogging(options =>
