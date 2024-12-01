@@ -66,7 +66,12 @@ Can access APIs in AdminController and AuthenticationController.
 To register as a User:
 
 POST api/Authentication/Register/1
-- { "username": "user_username", "password": "YourStrongPassword1!" }
+```json
+{
+   "username": "user_username",
+   "password": "YourStrongPassword1!"
+}
+```
 
 
 Can access APIs in UserController and AuthenticationController.
@@ -77,13 +82,24 @@ Can access APIs in UserController and AuthenticationController.
 To login for Admin or User role:
 
 POST api/Authentication/Login/
-- { "username": "admin_username", "password": "YourStrongPassword1!" }
-
+```json
+{
+   "username": "admin_username",
+   "password": "YourStrongPassword1!"
+}
+```
 
 ### Task Management
 To add a task:
-- { "title": "string", "description": "string", "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6", "dueDate": "2024-11-30T11:53:26.525Z", "status": 0 }
-
+```json
+{
+   "title": "string",
+   "description": "string",
+   "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+   "dueDate": "2024-11-30T11:53:26.525Z",
+   "status": 0
+}
+```
 
 ## Testing Process
 
