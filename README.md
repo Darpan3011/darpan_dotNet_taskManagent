@@ -84,7 +84,7 @@ To login for Admin or User role:
 POST api/Authentication/Login/
 ```json
 {
-   "username": "admin_username",
+   "username": "admin/user_username",
    "password": "YourStrongPassword1!"
 }
 ```
