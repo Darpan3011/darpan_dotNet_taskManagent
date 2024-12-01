@@ -114,5 +114,5 @@ To add a task:
 8. Create an admin user  
 9. List all available users (Copy any one UserId)
 10. To Add new task:
-   - Paste the copied UserId
-   - Status is optional (default is Pending)
+   -- Paste the copied UserId
+   -- Status is optional (default is Pending)
