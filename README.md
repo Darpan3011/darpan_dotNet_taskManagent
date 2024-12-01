@@ -21,7 +21,8 @@ This solution consists of three projects, each designed with specific responsibi
 9. Global Exception Middleware
 10. Logging using Serilog
 11. LINQ
-12. Swagger UI for both Development and Production (as it is a web API project)
+12. DbContext
+13. Swagger UI for both Development and Production (as it is a web API project)
 
 ## Project Structure
 
