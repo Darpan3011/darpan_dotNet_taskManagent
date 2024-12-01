@@ -13,8 +13,6 @@ namespace finalSubmissionDotNet.Filters
                 context.Result = new BadRequestObjectResult(context.ModelState);
                 return;
             }
-
-            // If ModelState is valid, proceed to the next stage of the pipeline
             await next();
         }
     }

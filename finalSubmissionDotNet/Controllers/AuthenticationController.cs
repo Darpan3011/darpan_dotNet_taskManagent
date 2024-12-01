@@ -72,7 +72,7 @@ namespace finalSubmissionDotNet.Controllers
                 await _userManager.AddToRoleAsync(user, usertype.ToString());
             }
 
-            return Ok(new { message = "User registered successfully!" });
+            return Ok(new { message = $"{(usertype == UserType.Admin ? "Admin" : "User") } registered successfully!" });
         }
 
         /// <summary>

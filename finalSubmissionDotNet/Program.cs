@@ -17,19 +17,10 @@ WebApplication app = builder.Build();
 
 app.UseExceptionMiddleware();
 
-//using (IServiceScope scope = app.Services.CreateScope())
-//{
-//    var seeder = scope.ServiceProvider.GetRequiredService<IRoleSeeder>();
-//    await seeder.SeedRolesAsync();
-//}
-
 app.UseSerilogRequestLogging();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
