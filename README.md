@@ -110,7 +110,7 @@ To add a task:
 3. Select `finalSubmission.Infrastructure` as project
 4. Write command "`Add-Migration Initial`"
 5. Write command "`Update-Database`"
-6. After successful message follow below steps
+6. After successful message, run the project
 7. Create a user
 8. Create an admin user  
 9. List all available users (Copy any one UserId)
