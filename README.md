@@ -90,7 +90,7 @@ POST api/Authentication/Login/
 }
 ```
 
-- If the credentials is correct the token will be generated. Paste this token in the Authorize token as ```Bearer your_token```.
+- If the credentials is correct the token will be generated. Paste this token in the Authorize section in Swagger UI as ```Bearer your_token```.
 - If you are Admin then you will have access to Admin APIs and if you are User then you will have access to User APIs.
 
 ### Task Management
