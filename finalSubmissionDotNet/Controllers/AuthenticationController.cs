@@ -8,6 +8,7 @@ using finalSubmission.Core.Domain.Entities;
 using ContactsManager.Core.Domain.IdentityEntities;
 using Microsoft.AspNetCore.Authorization;
 using finalSubmission.Core.ServiceContracts.IUserService;
+using finalSubmissionDotNet.Filters;
 
 namespace finalSubmissionDotNet.Controllers
 {
@@ -79,12 +80,9 @@ namespace finalSubmissionDotNet.Controllers
         /// Login a user and generate a JWT token (paste the token in swagger in Authorize input as "Bearer jwt_generated_token")
         /// </summary>
         [HttpPost("[action]")]
+        [TypeFilter(typeof(ModelValidationActionFilter))]
         public async Task<IActionResult> Login([FromBody] LoginUser model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             ApplicationUser? user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))

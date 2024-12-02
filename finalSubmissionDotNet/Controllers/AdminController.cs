@@ -89,7 +89,7 @@ namespace finalSubmissionDotNet.Controllers
                 }
                 else
                 {
-                    return BadRequest(new { message = "User not found" });
+                    return BadRequest(new { message = $"User not found with UserID {task.UserId}" });
                 }
 
             }
