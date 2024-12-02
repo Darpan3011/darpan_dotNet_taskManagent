@@ -114,8 +114,8 @@ To add a task:
 4. Write command "`Add-Migration Initial`"
 5. Write command "`Update-Database`"
 6. After successful message, run the project
-7. Create a user
-8. Create an admin user  
+7. [Create a user](#User-Role)
+8. [Create an admin user](#Administrator-Role)
 9. List all available users (Copy any one UserId)
 10. To Add new task:
    -- Paste the copied UserId
