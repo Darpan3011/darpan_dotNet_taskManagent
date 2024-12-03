@@ -23,5 +23,5 @@
   <ItemGroup>
     <ProjectReference Include="..\finalSubmission.Core\finalSubmission.Core.csproj" />
   </ItemGroup>
-
+	
 </Project>
