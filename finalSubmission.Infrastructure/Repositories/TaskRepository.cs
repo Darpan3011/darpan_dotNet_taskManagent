@@ -21,7 +21,7 @@ namespace finalSubmission.Infrastructure.Repositories
         /// <returns>Returns a list of all tasks.</returns>
         public async Task<List<MyTask>> GetAllTasks()
         {
-            return await _context.AllTasksTable.FromSqlRaw("EXECUTE GetAllTasks").ToListAsync();
+            return await _context.AllTasksTable.ToListAsync();
 
         }
 

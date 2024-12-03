@@ -56,7 +56,7 @@ namespace finalSubmission.Infrastructure.Repositories
 
         public async Task<List<User>> GetAllAnUsers()
         {
-            return await _dbContext.AllUsersTable.FromSqlRaw("EXECUTE GetAllUsers").ToListAsync();
+            return await _dbContext.AllUsersTable.ToListAsync();
         }
 
         /// <summary>
