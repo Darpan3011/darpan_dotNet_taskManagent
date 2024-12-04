@@ -56,12 +56,15 @@ namespace finalSubmissionDotNet.Controllers
                 return BadRequest(ModelState);
             }
 
+            Guid userid = Guid.NewGuid();
+
             ApplicationUser user = new ApplicationUser
             {
-                UserName = model.UserName
+                UserName = model.UserName,
+                Id = userid
             };
 
-            User user1 = new User() { UserName = model.UserName, UserId = Guid.NewGuid() };
+            User user1 = new User() { UserName = model.UserName, UserId = userid };
 
             await _createUser.CreateAnUser(user1);
 
