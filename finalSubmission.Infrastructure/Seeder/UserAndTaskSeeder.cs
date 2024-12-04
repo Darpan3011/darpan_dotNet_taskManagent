@@ -3,6 +3,7 @@ using finalSubmission.Core.Domain.Entities;
 using finalSubmission.Infrastructure.DbContexts;
 using finalSubmission.Infrastructure.ISeeder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace finalSubmission.Infrastructure.Seeder
 {
@@ -57,24 +58,33 @@ namespace finalSubmission.Infrastructure.Seeder
                 });
             }
 
+            MyTask? existingTask1 = await _taskOrderDbContext.AllTasksTable.FirstOrDefaultAsync(t => t.Title == "Test");
 
-            await _taskOrderDbContext.AllTasksTable.AddAsync(new MyTask
+            if (existingTask1 == null)
             {
-                Title = "Test",
-                Description = "Test Decription",
-                UserId = id2,
-                DueDate = DateTime.Now.AddDays(5),
-                Status = Core.Enums.CustomTaskStatus.Completed
-            });
+                await _taskOrderDbContext.AllTasksTable.AddAsync(new MyTask
+                {
+                    Title = "Test",
+                    Description = "Test Description",
+                    UserId = id2,
+                    DueDate = DateTime.Now.AddDays(5),
+                    Status = Core.Enums.CustomTaskStatus.Completed
+                });
+            }
 
-            await _taskOrderDbContext.AllTasksTable.AddAsync(new MyTask
+            MyTask? existingTask2 = await _taskOrderDbContext.AllTasksTable.FirstOrDefaultAsync(t => t.Title == "Test2");
+
+            if (existingTask2 == null)
             {
-                Title = "Test2",
-                Description = "Test Decription 2",
-                UserId = id2,
-                DueDate = DateTime.Now.AddDays(5),
-                Status = Core.Enums.CustomTaskStatus.Pending
-            });
+                await _taskOrderDbContext.AllTasksTable.AddAsync(new MyTask
+                {
+                    Title = "Test2",
+                    Description = "Test Description 2",
+                    UserId = id2,
+                    DueDate = DateTime.Now.AddDays(5),
+                    Status = Core.Enums.CustomTaskStatus.Pending
+                });
+            }
 
             await _taskOrderDbContext.SaveChangesAsync();
         }
