@@ -17,8 +17,9 @@ builder.Services.AddServiceCollection(builder.Configuration);
 // Build the application
 WebApplication app = builder.Build();
 
-// Seed roles
+// Seed roles and Users
 await SeedRolesAsync(app.Services);
+await SeedUserAndTaskAsync(app.Services);
 
 // Middleware setup
 app.UseExceptionMiddleware();
@@ -41,3 +42,13 @@ async Task SeedRolesAsync(IServiceProvider services)
         await roleSeeder.SeedRolesAsync();
     }
 }
+
+async Task SeedUserAndTaskAsync(IServiceProvider services)
+{
+    using (var scope = services.CreateScope())
+    {
+        var userSeeder = scope.ServiceProvider.GetRequiredService<IUserAndTaskSeeder>();
+        await userSeeder.SeedUsersAsync();
+    }
+}
+
