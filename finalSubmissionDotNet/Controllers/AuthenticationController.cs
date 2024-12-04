@@ -113,7 +113,7 @@ namespace finalSubmissionDotNet.Controllers
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token =  new JwtSecurityToken(
+            JwtSecurityToken? token =  new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
@@ -140,7 +140,7 @@ namespace finalSubmissionDotNet.Controllers
         [TypeFilter(typeof(ModelValidationActionFilter))]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest model)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == model.RefreshToken);
+            ApplicationUser? user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == model.RefreshToken);
             if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
                 return Unauthorized(new { message = "Invalid or expired refresh token" });
@@ -161,7 +161,7 @@ namespace finalSubmissionDotNet.Controllers
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token =  new JwtSecurityToken(
+            JwtSecurityToken? token =  new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
