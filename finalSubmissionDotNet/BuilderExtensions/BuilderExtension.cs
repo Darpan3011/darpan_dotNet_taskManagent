@@ -7,14 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using ContactsManager.Core.Domain.IdentityEntities;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-using finalSubmission.Infrastructure.Seeder;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using finalSubmission.Core.ServiceContracts.ITaskService;
 using finalSubmission.Core.Services.TaskService;
 using System.Reflection;
-using finalSubmission.Infrastructure.ISeeder;
-using finalSubmissionDotNet.Helper;
 
 namespace finalSubmissionDotNet.BuilderExtensions
 {
@@ -88,7 +85,7 @@ namespace finalSubmissionDotNet.BuilderExtensions
 
 
             // DI
-            services.AddScoped<IRoleSeeder, RoleSeeder>();
+            //services.AddScoped<IRoleSeeder, RoleSeeder>();
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGetAllTasks, GetAllTasks>();
@@ -105,7 +102,7 @@ namespace finalSubmissionDotNet.BuilderExtensions
             services.AddScoped<IGetByUserID, GetByUserID>();
             services.AddScoped<IGetFilteredTasksByUser,  GetFilteredTasksByUser>();
             services.AddScoped<IUserExistsOrNot, UserExistsOrNot>();
-            services.AddScoped<IUserAndTaskSeeder, UserAndTaskSeeder>();
+            //services.AddScoped<IUserAndTaskSeeder, UserAndTaskSeeder>();
 
             // for app.UseHttpLogging();
             services.AddHttpLogging(options =>
