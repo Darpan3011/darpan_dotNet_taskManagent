@@ -24,6 +24,7 @@ This solution consists of three projects, each designed with specific responsibi
 12. LINQ
 13. DbContext
 14. Swagger UI for both Development and Production (as it is a web API project)
+15. Seed Roles, Users and Tasks
 
 ## Project Structure
 
