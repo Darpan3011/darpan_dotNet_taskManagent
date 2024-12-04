@@ -24,6 +24,7 @@ This solution consists of three projects, each designed with specific responsibi
 12. LINQ
 13. DbContext
 14. Swagger UI for both Development and Production (as it is a web API project)
+15. Seed Roles, Users and Tasks
 
 ## Project Structure
 
@@ -115,9 +116,19 @@ To add a task:
 4. Write command "`Add-Migration Initial`"
 5. Write command "`Update-Database`"
 6. After successful message, run the project
-7. [Create a user](#User-Role)
-8. [Create an admin user](#Administrator-Role)
-9. List all available users (Copy any one UserId)
-10. To Add new task:
-   -- Paste the copied UserId
-   -- Status is optional (default is Pending)
+7. To Login as User:
+   ```json
+    {
+        "userName": "user",
+        "password": "User301@"
+    }
+   ```
+   Then Paste the generated token in Authorize section of SwaggerUI.
+8. To Login as Admin:
+   ```json
+    {
+        "userName": "admin",
+        "password": "Admin301@"
+    } 
+   ```
+   Then Paste the generated token in Authorize section of SwaggerUI.
