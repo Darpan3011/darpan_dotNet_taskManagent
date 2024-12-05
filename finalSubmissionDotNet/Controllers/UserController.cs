@@ -105,6 +105,10 @@ namespace finalSubmissionDotNet.Controllers
         [HttpGet("tasks/filter")]
         public async Task<IActionResult> GetFilteredTasks([FromQuery] string? title, [FromQuery] CustomTaskStatus? status, [FromQuery] DateTime? dueDate)
         {
+            if (string.IsNullOrEmpty(title) && status == null && dueDate == null)
+            {
+                return BadRequest("At least one filter must be provided.");
+            }
             try
             {
                 Guid userId = GetUserIdFromToken();
