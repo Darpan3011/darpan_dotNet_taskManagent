@@ -18,13 +18,14 @@ This solution consists of three projects, each designed with specific responsibi
 6. Authentication using JWT
 7. Role-Based Authorization using JWT
 8. Refresh Tokens
-9. Filters
-10. Global Exception Middleware
-11. Logging using Serilog
-12. LINQ
-13. DbContext
-14. Swagger UI for both Development and Production (as it is a web API project)
-15. Seed Roles, Users and Tasks
+9. Model Validation Action Filter
+10. Data Filtering from database
+11. Global Exception Middleware
+12. Logging using Serilog
+13. LINQ
+14. DbContext
+15. Swagger UI for both Development and Production (as it is a web API project)
+16. Seed Roles, Users and Tasks
 
 ## Project Structure
 
